@@ -31,5 +31,38 @@ public class BookTest {
     assertTrue(Book.all().contains(newBook));
   }
 
+  @Test
+  public void update_updatesBookTitle() {
+    Book newBook = new Book("History");
+    newBook.save();
+    newBook.update("Charles");
+    assertEquals("Charles", newBook.getTitle());
+  }
 
+  @Test
+  public void delete_removesBook() {
+    Book newBook = new Book("Literature");
+    newBook.save();
+    assertTrue(Book.all().contains(newBook));
+    newBook.delete();
+    assertFalse(Book.all().contains(newBook));
+  }
+
+  @Test
+  public void find_returnesBookWithId() {
+    Book newBook = new Book("Literature");
+    newBook.save();
+    assertEquals(Book.find(newBook.getId()), newBook);
+  }
+
+
+  @Test
+  public void getAuthors_returnesBookWithId() {
+    Book newBook = new Book("Literature");
+    Author newAuthor = new Author("Bobby Bob");
+    newBook.save();
+    newAuthor.save();
+    newBook.addAuthor(newAuthor.getId());
+    assertTrue(newBook.getAuthors().contains(newAuthor));
+  }
 }

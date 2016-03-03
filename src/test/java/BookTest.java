@@ -65,4 +65,31 @@ public class BookTest {
     newBook.addAuthor(newAuthor.getId());
     assertTrue(newBook.getAuthors().contains(newAuthor));
   }
+
+  @Test
+  public void allCopiesOf_returnsAListOfCopies() {
+    Book newBook = new Book("The Great Gatsby");
+    newBook.save();
+    Copy copy1 = new Copy(newBook.getId());
+    Copy copy2 = new Copy(newBook.getId());
+    Copy copy3 = new Copy(newBook.getId());
+    copy1.save();
+    copy2.save();
+    copy3.save();
+    assertEquals(3 , newBook.allCopiesOf().size());
+  }
+
+  @Test
+  public void availableCopies_returnsAListOfAvailableCopies() {
+    Book newBook = new Book("The Great Gatsby");
+    newBook.save();
+    Copy copy1 = new Copy(newBook.getId());
+    Copy copy2 = new Copy(newBook.getId());
+    Copy copy3 = new Copy(newBook.getId());
+    copy1.save();
+    copy2.save();
+    copy3.save();
+    copy1.checkout();
+    assertEquals(2 , newBook.availableCopies().size());
+  }
 }

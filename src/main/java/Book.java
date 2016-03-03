@@ -65,10 +65,19 @@ public class Book {
   }
 
   public List<Copy> allCopiesOf() {
-    String sql = "SELECT * FROM copies WHERE id=:id;";
+    String sql = "SELECT * FROM copies WHERE book_id=:id;";
     try (Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
       .addParameter("id", id)
+      .executeAndFetch(Copy.class);
+    }
+  }
+
+  public List<Copy> availableCopies() {
+    String sql = "SELECT * FROM copies WHERE checkout=false AND book_id=:id;";
+    try (Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+      .addParameter("id" , id)
       .executeAndFetch(Copy.class);
     }
   }

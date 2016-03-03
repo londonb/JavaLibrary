@@ -42,8 +42,7 @@ public class Copy {
       return false;
     } else {
       Copy newCopy = (Copy) otherCopy;
-      return  this.getBookId() == (newCopy.getBookId()) &&
-              this.getId() == (newCopy.getId());
+      return getId() == (newCopy.getId());
     }
   }
 
@@ -52,9 +51,9 @@ public class Copy {
   //CREATE
   public void save() {
     try (Connection con = DB.sql2o.open()) {
-       String sql = "INSERT INTO copies (checkout, book_id) VALUES (:out, :book_id)";
+       String sql = "INSERT INTO copies (checkout, book_id) VALUES (:checkout, :book_id)";
        this.id = (int) con.createQuery(sql, true)
-         .addParameter("out", this.checkout)
+         .addParameter("checkout", checkout)
          .addParameter("book_id", book_id)
          .executeUpdate()
          .getKey();
@@ -100,6 +99,8 @@ public class Copy {
     return dueDate;
   }
 
+
+
   //UPDATE
 
   public void checkout() {
@@ -107,18 +108,26 @@ public class Copy {
     Calendar now = Calendar.getInstance();
     long current_date = now.getTimeInMillis();
     long due_date = current_date + 2592000000L;
-    String sql = ("UPDATE copies SET checkout=:checkout, due_date=:due_date;");
+    String sql = ("UPDATE copies SET checkout=:checkout, due_date=:due_date  WHERE id=:id;");
     try (Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
         .addParameter("checkout", checkout)
         .addParameter("due_date", due_date)
+        .addParameter("id", id)
         .executeUpdate();
     }
+    // String sql = ("INSERT INTO checkouts SET checkoutDate=:checkout, due_date=:due_date;");
+    // try (Connection con = DB.sql2o.open()) {
+    //   con.createQuery(sql)
+    //     .addParameter("checkout", checkout)
+    //     .addParameter("due_date", due_date)
+    //     .executeUpdate();
+    // }
   }
 
-  // RETRIEVE DUEDATE IN MILLISECONDS AND CONVERT TO STRING
-  // SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy E");
-  // sdf.format(dueDate);
+  public void checkin() {
+    checkout = false;
+  }
 
 
   // DELETE

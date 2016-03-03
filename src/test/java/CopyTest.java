@@ -1,5 +1,7 @@
 import org.junit.*;
 import static org.junit.Assert.*;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class CopyTest {
 
@@ -37,15 +39,20 @@ public class CopyTest {
     assertTrue(Copy.all().contains(newCopy));
   }
 
-  // @Test
-  // public void update_updatesPropertiesOfCopy() {
-  //   Book newBook = new Book("The Great Gatsby");
-  //   newBook.save();
-  //   Copy newCopy = new Copy(newBook.getId());
-  //   newCopy.save();
-  //   newCopy.update(true, );
-  //   assertEquals("Charles", newCopy.getTitle());
-  // }
+  @Test
+  public void checkout_updatesDueDateAndCheckoutStatusOfCopy() {
+    Book newBook = new Book("The Great Gatsby");
+    newBook.save();
+    Copy newCopy = new Copy(newBook.getId());
+    newCopy.save();
+    newCopy.checkout();
+      Calendar now = Calendar.getInstance();
+      long current_date = now.getTimeInMillis();
+      long due_date = current_date + 2592000000L;
+      SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy E");
+    assertEquals(sdf.format(due_date), newCopy.displayDueDate());
+    assertEquals(newCopy.getCheckout(), true);
+  }
 
   @Test
   public void delete_removesCopy() {
@@ -83,5 +90,19 @@ public class CopyTest {
     Copy newCopy = new Copy(newBook.getId());
     newCopy.save();
     assertEquals(newBook.getTitle(), newCopy.getBookTitle());
+  }
+
+  @Test
+  public void displayDueDate() {
+    Book newBook = new Book("The Great Gatsby");
+    newBook.save();
+    Copy newCopy = new Copy(newBook.getId());
+    newCopy.save();
+    newCopy.checkout();
+    Calendar now = Calendar.getInstance();
+    long current_date = now.getTimeInMillis();
+    long due_date = current_date + 2592000000L;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy E");
+    assertEquals(sdf.format(due_date), newCopy.displayDueDate());
   }
 }

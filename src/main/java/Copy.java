@@ -1,12 +1,13 @@
 import org.sql2o.*;
 import java.util.List;
 import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class Copy {
   private int id;
   private int book_id;
   private boolean checkout;
-  private Calendar due_date;
+  private long due_date;
   private int patron_id;
 
 
@@ -23,11 +24,11 @@ public class Copy {
     return book_id;
   }
 
-  public boolean getOut() {
+  public boolean getCheckout() {
     return checkout;
   }
 
-  public Calendar getDueDate() {
+  public long getDueDate() {
     return due_date;
   }
 
@@ -45,6 +46,8 @@ public class Copy {
               this.getId() == (newCopy.getId());
     }
   }
+
+
 
   //CREATE
   public void save() {
@@ -89,22 +92,34 @@ public class Copy {
     return myBook.getTitle();
   }
 
+  public String displayDueDate() {
+    Copy myCopy = Copy.find(id);
+    long due_date = myCopy.getDueDate();
+    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy E");
+    String dueDate = sdf.format(due_date);
+    return dueDate;
+  }
+
   //UPDATE
 
-  // public void checkout() {
-  //   checkout = true;
-  //   Calendar due_date = Calendar.getInstance();
-  //   due_date.add(Calendar.DAY_OF_MONTH, 30);
-  //   String sql = ("UPDATE copies SET checkout=:checkout, due_date=:due_date;");
-  //   try (Connection con = DB.sql2o.open()) {
-  //     return con.createQuery(sql)
-  //     .addParameter("out", checkout)
-  //     .addParameter("due_date", due_date)
-  //     .executeUpdate();
-  //   }
-  // }
+  public void checkout() {
+    checkout = true;
+    Calendar now = Calendar.getInstance();
+    long current_date = now.getTimeInMillis();
+    long due_date = current_date + 2592000000L;
+    String sql = ("UPDATE copies SET checkout=:checkout, due_date=:due_date;");
+    try (Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("checkout", checkout)
+        .addParameter("due_date", due_date)
+        .executeUpdate();
+    }
+  }
 
- //  http://www.java2s.com/Tutorial/Java/0040__Data-Type/SimpleDateFormat.htm
+  // RETRIEVE DUEDATE IN MILLISECONDS AND CONVERT TO STRING
+  // SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy E");
+  // sdf.format(dueDate);
+
 
   // DELETE
   public void delete() {

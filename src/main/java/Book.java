@@ -64,6 +64,15 @@ public class Book {
     }
   }
 
+  public List<Copy> allCopiesOf() {
+    String sql = "SELECT * FROM copies WHERE id=:id;";
+    try (Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetch(Copy.class);
+    }
+  }
+
 //UPDATE
   public void update(String newTitle) {
   this.title = newTitle;

@@ -1,0 +1,35 @@
+inputted-author.vtl
+
+#if ($authorNumber > 0 && $authorNumber < 4)
+<h2>Who wrote $title?</h2>
+  <form action="/books" method="post">
+    <div class="form-group">
+      <label for="name">Primary author</label>
+      <input name="name" id="name1" type="text">
+    </div>
+    #if ($authorNumber >= 2)
+      <div class="form-group">
+        <label for="name">Second author</label>
+        <input name="name" id="name2" type="text" value="unnamed">
+      </div>
+    #if ($authorNumber >= 3)
+      <div class="form-group">
+        <label for="name">Third author</label>
+        <input name="name" id="name3" type="text" value="unnamed">
+      </div>
+    #end
+    #end
+      <button class="btn btn-danger" type="submit">Save Book</button>
+  </form>
+
+#else
+<h2>please enter a number between 1 and 3</h2>
+<form action="/input-author" method="post">
+  <div class="form-group">
+    <label for="number">How many authors does $title have?</label>
+    <input name="authorNumber" id="authorNumber" type="number">
+  </div>
+  <button class="btn btn-danger" type="submit">Go</button>
+</form>
+
+#end

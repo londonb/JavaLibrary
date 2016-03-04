@@ -99,8 +99,6 @@ public class Copy {
     return dueDate;
   }
 
-
-
   //UPDATE
 
   public void checkout() {
@@ -116,13 +114,6 @@ public class Copy {
         .addParameter("id", id)
         .executeUpdate();
     }
-    // String sql = ("INSERT INTO checkouts SET checkoutDate=:checkout, due_date=:due_date;");
-    // try (Connection con = DB.sql2o.open()) {
-    //   con.createQuery(sql)
-    //     .addParameter("checkout", checkout)
-    //     .addParameter("due_date", due_date)
-    //     .executeUpdate();
-    // }
   }
 
   public void checkin() {

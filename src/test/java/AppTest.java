@@ -1,46 +1,34 @@
-import org.junit.*;
-import static org.junit.Assert.*;
-import java.util.ArrayList;
 import org.fluentlenium.adapter.FluentTest;
+import static org.junit.Assert.*;
+import org.junit.*;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import static org.fluentlenium.core.filter.FilterConstructor.*;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import java.util.HashMap;
 
 public class AppTest extends FluentTest {
   public WebDriver webDriver = new HtmlUnitDriver();
+
+  @Override
   public WebDriver getDefaultDriver() {
       return webDriver;
   }
 
+  @Rule
+  public DatabaseRule database = new DatabaseRule();
+
   @ClassRule
   public static ServerRule server = new ServerRule();
 
-    // @Test
-    // public void rootTest() {
-    //     goTo("http://localhost:4567/change");
-    //     assertThat(pageSource()).contains("Input the number of cents");
-    // }
+//AS A USER I WANT TO MAKE IT TO A MAIN PAGE THAT TELLS ME HOW TO ACCESS INFORMATION AS A LIBARARIAN OR A PATRON.
 
-    // @Test
-    // public void fillFormTest() {
-    //     goTo("http://localhost:4567/change");
-    //     fill("#changeInput").with("33");
-    //     submit("#submit");
-    //     assertThat(pageSource()).contains("Your change for");
-    // }
-
-  // @Test
-  // public void deleteRemovesRestaurantFromHomePage() {
-  //   Cuisine newCuisine = new Cuisine("American");
-  //   newCuisine.save();
-  //   Restaurant newResty = new Restaurant("Jimmy John's", newCuisine.getId());
-  //   newResty.save();
-  //   goTo("http://localhost:4567/");
-  //   assertThat(pageSource()).contains("Jimmy John's");
-  //   newResty.delete();
-  //   goTo("http://localhost:4567/");
-  //   assertThat(pageSource()).doesNotContain("Jimmy John's");
-  // }
+  @Test
+  public void rootTest() {
+      goTo("http://localhost:4567/");
+      assertThat(pageSource()).contains("Library");
+  }
 }

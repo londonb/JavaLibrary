@@ -1,0 +1,12 @@
+#if ($user.equals("librarian"))
+  <form action="/how-many" method="post">
+    <div class="form-group">
+      <label for="title">Name of book</label>
+      <input id="title" name="title" type="text">
+      <button type="submit" class="btn btn-primary">Add book</button>
+    </div>
+  </form>
+#else <p>
+  patron page
+</p>
+#end

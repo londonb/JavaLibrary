@@ -1,0 +1,10 @@
+#if ($books.size() == 0)
+  <h2>You have no books in your library</h2>
+#else
+<h2>This Library's Books</h2>
+  <ul>
+    #foreach ($book in $books)
+      <li>$book.getTitle()</li>
+    #end
+  </ul>
+#end
